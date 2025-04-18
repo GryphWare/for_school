@@ -34,6 +34,13 @@ int **getValidMatrix(int *row, int *column){
 
   /*tao mang 2d*/
   int **arr = malloc(*row * sizeof(int*));
+  /*kiem tra mang co toan tai*/
+  if(!arr){
+    fprintf(stderr, "Malloc bi loi");
+    freeArray(arr, *row);
+    return NULL;
+  }
+  
   for(size_t i = 0; i < *row; i++){
     *(arr + i) = malloc(*column * sizeof(int)); 
   }
@@ -56,6 +63,38 @@ int **getValidMatrix(int *row, int *column){
   return arr;
   
 }
+
+/*ham tinh trung binh*/
+float findOddAndAverage(int **arr, int row, int column){
+
+  /*ham nay tinh tong so le va f's so le*/
+  float totalOfOdd, OddCount;
+  totalOfOdd = OddCount = 0;
+
+  for(size_t i = 0; i < row; i++){
+    for(size_t j = 0; j < column; j++){
+      if(*(*(arr + i) + j) % 2 != 0){
+	totalOfOdd += *(*(arr + i) + j);
+	OddCount++;
+      }
+    }
+  }
+
+  return totalOfOdd / OddCount;
+}
+
+/*ham kiem tra so hoan hao*/
+int checkPerfect(int num){
+  int sum = 0;
+  for(size_t i = 1; i <= num / 2; i++){
+    if(num % i == 0){
+      sum += i;
+    }
+  }
+  return num == sum;
+}
+
+
 int main(){
 
   int row, column;
@@ -74,7 +113,17 @@ int main(){
     for(size_t j = 0; j < column; j++){
       printf("%d ", *(*(arr2d + i) + j));
     }
-    puts(" ");
+    puts("");
+  }
+
+  float average = findOddAndAverage(arr2d, row, column);
+  printf("stb: %.5f\n", average);
+
+  /*so cmmnr hao*/
+  for(size_t i = 0; i < row; i++){
+    if(*(*(arr2d + i) + i) > 0 && checkPerfect(*(*(arr2d + i) + i))){
+      printf("cac so ok: %d ", *(*(arr2d + i) + i));
+    }
   }
   
   return 0;
