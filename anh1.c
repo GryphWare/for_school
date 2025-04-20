@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 /*neu user nhap mang ma la char*/
 void clearChar(){
@@ -94,6 +95,17 @@ int checkPerfect(int num){
   return num == sum;
 }
 
+int findMaxAntiDiagonal(int **arr, int row, int column){
+  int largest = INT_MIN;
+  for(size_t i = 0; i < row; i++){
+    for(size_t j = 0; j < (row - 1 - i); j++){
+      if(*(*(arr + i) + j) > largest){
+	largest = *(*(arr + i) + j);
+      }
+    }
+  }
+  return largest;
+}
 
 int main(){
 
@@ -122,9 +134,15 @@ int main(){
   /*so cmmnr hao*/
   for(size_t i = 0; i < row; i++){
     if(*(*(arr2d + i) + i) > 0 && checkPerfect(*(*(arr2d + i) + i))){
-      printf("cac so ok: %d ", *(*(arr2d + i) + i));
+      printf("cac so ok: %d \n", *(*(arr2d + i) + i));
     }
   }
+
+  /*kiem so lon nhat tren duong cheo phu*/
+  int max = findMaxAntiDiagonal(arr2d, row, column);
+  printf("so lon nhat tren duong cheo phu%d", max);
+
+  freeArray(arr2d, row);
   
   return 0;
 }
